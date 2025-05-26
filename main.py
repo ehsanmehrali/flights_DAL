@@ -11,7 +11,7 @@ def delayed_flights_by_airline():
     Then runs the query using the data object method "get_delayed_flights_by_airline".
     When results are back, calls "print_results" to show them to on the screen.
     """
-    airline_input = input("Enter airline name: ")
+    airline_input = input("Enter airline name: ").strip().title()
     results = flights_data.get_delayed_flights_by_airline(airline_input)
     print_results(results)
 
@@ -25,7 +25,7 @@ def delayed_flights_by_airport():
     valid = False
     airport_input = ""
     while not valid:
-        airport_input = input("Enter origin airport IATA code: ")
+        airport_input = input("Enter origin airport IATA code: ").strip().upper()
         # Valide input
         if airport_input.isalpha() and len(airport_input) == IATA_LENGTH:
             valid = True
