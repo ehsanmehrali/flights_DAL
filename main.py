@@ -1,6 +1,7 @@
 import flights_data
 from datetime import datetime
 import sqlalchemy
+import sqlalchemy.exc
 
 IATA_LENGTH = 3
 
