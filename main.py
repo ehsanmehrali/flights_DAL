@@ -39,6 +39,7 @@ def flight_by_id():
     When results are back, calls "print_results" to show them to on the screen.
     """
     valid = False
+    id_input = ''
     while not valid:
         try:
             id_input = int(input("Enter flight ID: "))
@@ -79,9 +80,8 @@ def print_results(results):
     print(f"Got {len(results)} results.")
     for result in results:
         # turn result into dictionary
-        result = result._mapping
+        result = result._mapping        # print(result)
         # print(result)
-        
         # Check that all required columns are in place
         try:
             delay = int(result['DELAY']) if result['DELAY'] else 0  # If delay columns is NULL, set it to 0

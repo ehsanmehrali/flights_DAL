@@ -1,7 +1,5 @@
 from sqlalchemy import create_engine, text
-
-QUERY_FLIGHT_BY_ID = "SELECT flights.*, airlines.airline, flights.ID, flights.DEPARTURE_DELAY as DELAY FROM flights JOIN airlines ON flights.airline = airlines.id WHERE flights.ID = :id"
-QUERY_FLIGHT_BY_DATE = "SELECT flights.ID, flights.ORIGIN_AIRPORT, flights.DESTINATION_AIRPORT, flights.AIRLINE as AIRLINE, flights.DEPARTURE_DELAY as DELAY FROM flights WHERE flights.YEAR = :year AND flights.MONTH = :month AND flights.DAY = :day"
+from query import QUERY_FLIGHT_BY_ID, QUERY_FLIGHT_BY_DATE, QUERY_DELAYED_FLIGHT_BY_AIRLINE
 
 # Define the database URL
 DATABASE_URL = "sqlite:///data/flights.sqlite3"
@@ -29,12 +27,25 @@ def execute_query(query: str, params: dict) -> list[tuple]:
 def get_flight_by_id(flight_id: int) -> list[tuple]:
     """
     Searches for flight details using flight ID.
-    If the flight was found, returns a list with a single record.
+    :param flight_id: Flight ID as an integer.
+    :return: If the flight was found, returns a list with a single record.
     """
     params = {'id': flight_id}
     return execute_query(QUERY_FLIGHT_BY_ID, params)
 
 
-def get_flights_by_date(day: int, month: int, year: int):
+def get_flights_by_date(day: int, month: int, year: int) -> list[tuple]:
+    """
+    Searches for flight details using flight date.
+    :param day: Flight day as an int.
+    :param month: Flight month as an int.
+    :param year: Flight year as an int.
+    :return: A list of tuples(flights) if there is any.
+    """
     params = {'day': day, 'month': month, 'year': year}
     return execute_query(QUERY_FLIGHT_BY_DATE, params)
+
+
+def get_delayed_flights_by_airline(airline: str) -> list[tuple]:
+    params = {'airline': airline}
+    return execute_query(QUERY_DELAYED_FLIGHT_BY_AIRLINE, params)
