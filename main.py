@@ -23,6 +23,7 @@ def delayed_flights_by_airport():
     When results are back, calls "print_results" to show them to on the screen.
     """
     valid = False
+    airport_input = ""
     while not valid:
         airport_input = input("Enter origin airport IATA code: ")
         # Valide input
@@ -58,6 +59,7 @@ def flights_by_date():
     When results are back, calls "print_results" to show them to on the screen.
     """
     valid = False
+    date = ""
     while not valid:
         try:
             date_input = input("Enter date in DD/MM/YYYY format: ")
@@ -81,7 +83,7 @@ def print_results(results):
     for result in results:
         # turn result into dictionary
         result = result._mapping        # print(result)
-        # print(result)
+
         # Check that all required columns are in place
         try:
             delay = int(result['DELAY']) if result['DELAY'] else 0  # If delay columns is NULL, set it to 0
