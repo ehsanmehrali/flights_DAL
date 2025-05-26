@@ -80,7 +80,8 @@ def print_results(results):
     for result in results:
         # turn result into dictionary
         result = result._mapping
-
+        # print(result)
+        
         # Check that all required columns are in place
         try:
             delay = int(result['DELAY']) if result['DELAY'] else 0  # If delay columns is NULL, set it to 0
