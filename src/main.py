@@ -1,4 +1,4 @@
-import flights_data
+from src.services import flights_data
 from datetime import datetime
 import sqlalchemy
 import sqlalchemy.exc
