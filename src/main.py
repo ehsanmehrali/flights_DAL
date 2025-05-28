@@ -6,19 +6,9 @@ import sqlalchemy.exc
 
 from src.services import flights_data
 from src.handlers.csv_file_handler import save_to_cvs
+from src.services.graph_builder import *
 
 IATA_LENGTH = 3
-
-
-def delayed_flights_by_airline():
-    """
-    Asks the user for a textual airline name (any string will work here).
-    Then runs the query using the data object method "get_delayed_flights_by_airline".
-    When results are back, calls "print_results" to show them to on the screen.
-    """
-    airline_input = input("Enter airline name: ").strip().title()
-    results = flights_data.get_delayed_flights_by_airline(airline_input)
-    print_results(results)
 
 
 def delayed_flights_by_airport():
@@ -38,22 +28,14 @@ def delayed_flights_by_airport():
     print_results(results)
 
 
-def flight_by_id():
+def delayed_flights_by_airline():
     """
-    Asks the user for a numeric flight ID,
-    Then runs the query using the data object method "get_flight_by_id".
+    Asks the user for a textual airline name (any string will work here).
+    Then runs the query using the data object method "get_delayed_flights_by_airline".
     When results are back, calls "print_results" to show them to on the screen.
     """
-    valid = False
-    id_input = ''
-    while not valid:
-        try:
-            id_input = int(input("Enter flight ID: "))
-        except Exception as e:
-            print("Try again...")
-        else:
-            valid = True
-    results = flights_data.get_flight_by_id(id_input)
+    airline_input = input("Enter airline name: ").strip().title()
+    results = flights_data.get_delayed_flights_by_airline(airline_input)
     print_results(results)
 
 
@@ -77,12 +59,30 @@ def flights_by_date():
     print_results(results)
 
 
+def flight_by_id():
+    """
+    Asks the user for a numeric flight ID,
+    Then runs the query using the data object method "get_flight_by_id".
+    When results are back, calls "print_results" to show them to on the screen.
+    """
+    valid = False
+    id_input = ''
+    while not valid:
+        try:
+            id_input = int(input("Enter flight ID: "))
+        except ValueError:
+            print("Try again...")
+        else:
+            valid = True
+    results = flights_data.get_flight_by_id(id_input)
+    print_results(results)
+
+
 def save_result(output: list):
     """
     It asks the user if they want to save the data to a csv file?
     :param output: A list of flights.
     """
-    print(type(output))
     user_choice = input("Would you like to export the results to a CSV file? (y/n) ").strip().lower()
     if user_choice == "y" or user_choice == "yes":
         save_to_cvs(output)
@@ -137,7 +137,7 @@ def show_menu_and_get_input():
             choice = int(input())
             if choice in FUNCTIONS:
                 return FUNCTIONS[choice][0]
-        except ValueError as e:
+        except ValueError:
             pass
         print("Try again...")
 
@@ -148,7 +148,9 @@ FUNCTIONS = { 1: (flight_by_id, "Show flight by ID"),
               2: (flights_by_date, "Show flights by date"),
               3: (delayed_flights_by_airline, "Delayed flights by airline"),
               4: (delayed_flights_by_airport, "Delayed flights by origin airport"),
-              5: (quit, "Exit")
+              5: (build_graph_percentage_delayed_flights_per_airline, "Percentage of delayed flight per airline"),
+              6: (build_graph_percentage_delayed_flights_per_our_of_day , "Percentage of delayed flight per hour of the day"),
+              7: (quit, "Exit")
              }
 
 
