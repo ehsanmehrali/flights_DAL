@@ -1,9 +1,14 @@
-from src.services import flights_data
+
 from datetime import datetime
+
 import sqlalchemy
 import sqlalchemy.exc
 
+from src.services import flights_data
+from src.handlers.csv_file_handler import save_to_cvs
+
 IATA_LENGTH = 3
+
 
 def delayed_flights_by_airline():
     """
@@ -72,9 +77,22 @@ def flights_by_date():
     print_results(results)
 
 
-def print_results(results):
+def save_result(output: list):
     """
-    Get a list of flight results (List of dictionary-like objects from SQLAachemy).
+    It asks the user if they want to save the data to a csv file?
+    :param output: A list of flights.
+    """
+    print(type(output))
+    user_choice = input("Would you like to export the results to a CSV file? (y/n) ").strip().lower()
+    if user_choice == "y" or user_choice == "yes":
+        save_to_cvs(output)
+    else:
+        return
+
+
+def print_results(results: list):
+    """
+    Get a list of flight results (List of dictionary-like objects from sqlalchemy).
     Even if there is one result, it should be provided in a list.
     Each object *has* to contain the columns:
     FLIGHT_ID, ORIGIN_AIRPORT, DESTINATION_AIRPORT, AIRLINE, and DELAY.
@@ -99,6 +117,8 @@ def print_results(results):
             print(f"{result['ID']}. {origin} -> {dest} by {airline}, Delay: {delay} Minutes")
         else:
             print(f"{result['ID']}. {origin} -> {dest} by {airline}")
+
+    save_result(results)
 
 
 def show_menu_and_get_input():

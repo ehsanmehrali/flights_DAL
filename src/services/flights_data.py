@@ -1,7 +1,9 @@
+import os
 from sqlalchemy import create_engine, text
 
 # Define the database URL
-DATABASE_URL = "sqlite:///data/flights.sqlite3"
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+DATABASE_URL = f"sqlite:///{os.path.join(ROOT_DIR, 'data', 'flights.sqlite3')}"
 
 # Create the engine
 engine = create_engine(DATABASE_URL)
