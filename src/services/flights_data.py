@@ -84,6 +84,6 @@ def get_delayed_flights_by_airport(origin_airport: str) -> list[tuple]:
     :return: A list of tuples(delayed flights details) if there is any.
     """
     params = {'airport': origin_airport}
-    where = ""
+    where = "WHERE flights.DEPARTURE_DELAY IS NOT NULL AND flights.DEPARTURE_DELAY != '' AND flights.DEPARTURE_DELAY >= 20 AND airlines.airline = :airline"
     query_delayed_flights_by_origin_airport = build_get_flight_queries(where)
     return execute_query(query_delayed_flights_by_origin_airport, params)
